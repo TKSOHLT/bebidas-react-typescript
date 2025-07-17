@@ -1,13 +1,17 @@
-import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppStore } from "../stores/useAppStore";
 
 export default function Header() {
-  const [searchFilters, setSearchFilters] = useState();
+  const [searchFilters, setSearchFilters] = useState({
+    ingredient: "",
+    category: ""
+  });
   const { pathname } = useLocation();
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
   const fetchCategories = useAppStore((state) => state.fetchCategories);
+  const searchRecipies = useAppStore((state) => state.searchRecipies);
   const categories = useAppStore((state) => state.categories);
 
   useEffect(() => {
@@ -15,10 +19,22 @@ export default function Header() {
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
-    // setSearchFilters({
-    //   ...searchFilters,
-    //   [e.target.name] : e.target.value
-    // })
+    setSearchFilters({
+      ...searchFilters,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    //validar
+    if(Object.values(searchFilters).includes("")){
+      console.log("Todos los campos son obligatorios");
+      return;
+    }
+
+    //Consultar las recetas
+    searchRecipies(searchFilters)
   }
   return (
     <header
@@ -72,7 +88,7 @@ export default function Header() {
         </div>
         {isHome && (
           <>
-            <form className="md:w-1/2 2xl:w-1/3 bg-orange-400 my-32 p-10 rounded-lg shadow space-y-6">
+            <form className="md:w-1/2 2xl:w-1/3 bg-orange-400 my-32 p-10 rounded-lg shadow space-y-6" onSubmit={handleSumbit}>
               <div className="space-y-4">
                 <label
                   htmlFor="ingredient"
@@ -84,9 +100,11 @@ export default function Header() {
                 <input
                   id="ingredient"
                   type="text"
-                  name="ingrediente"
+                  name="ingredient"
                   className="bg-white p-3 w-full rounded-lg focus:outline-none"
                   placeholder="Nombre o ingrediente. Ej. Vodka, Tequila, Café"
+                  onChange={handleChange}
+                  value={searchFilters.ingredient}
                 />
               </div>
 
@@ -102,6 +120,9 @@ export default function Header() {
                   id="category"
                   name="category"
                   className="bg-white p-3 w-full rounded-lg focus:outline-none"
+                  onChange={handleChange}
+                  value={searchFilters.category}
+
                 >
                   <option value="">-- Seleccione --</option>
 
