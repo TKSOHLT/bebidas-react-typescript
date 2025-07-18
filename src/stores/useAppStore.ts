@@ -8,10 +8,15 @@
 //* y se unifican en el store principal
 //**/
 
+//!A esto se le conoce como: **Slice Pattern**
 import {create} from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { createRecipesSlice, type RecipiesSliceType } from './recipeSlice';
+import { type FavoritesSliceType, createFavoritesSlice } from './favoriteSlice'
+import { type NotificationSliceType, createNotificationSlice } from './notificationSlice'
 
-export const useAppStore = create<RecipiesSliceType>()(devtools((...a)=> ({//con "..a" esta tomando una copia de los argumentos (set, get, etc...) y los podemos pasar a nuestros slices
+export const useAppStore = create<RecipiesSliceType & FavoritesSliceType & NotificationSliceType>()(devtools((...a)=> ({//con "..a" esta tomando una copia de los argumentos (set, get, etc...) y los podemos pasar a nuestros slices
     ...createRecipesSlice(...a), // De este modo se está aplicando el slice (parte de un store mayor) al store padre
+    ...createFavoritesSlice(...a),
+    ...createNotificationSlice(...a)
 })))

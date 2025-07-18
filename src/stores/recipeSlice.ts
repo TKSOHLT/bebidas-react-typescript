@@ -3,6 +3,7 @@
 import type { StateCreator } from "zustand"
 import { getCategories, getRecipeById, getRecipies } from "../services/RecipeServices"
 import type { Categories, Drink, Drinks, Recipe, SearchFilter } from "../types"
+import type { FavoritesSliceType } from "./favoriteSlice"
 
 export type RecipiesSliceType = { //Este type tambien se tiene que utilizar en el store padre, para poder recibir los parametros que tiene este slice
     categories: Categories,
@@ -15,7 +16,8 @@ export type RecipiesSliceType = { //Este type tambien se tiene que utilizar en e
     closeModal: () => void
 }
 
-export const createRecipesSlice: StateCreator<RecipiesSliceType> = ((set) => ({
+// export const createRecipesSlice: StateCreator<RecipiesSliceType> = ((set) => ({
+export const createRecipesSlice: StateCreator<RecipiesSliceType & FavoritesSliceType, [], [], RecipiesSliceType> = ((set) => ({ //MEdiante esto se puede consumir este slice en otro slice, del otro pasando los argumentos set, get y api a esto se le conoce como ** nested slices ** 
     categories: {
         drinks: []
     },

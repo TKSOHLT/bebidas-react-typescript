@@ -1,11 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState, type JSX } from 'react';
+import { Fragment, type JSX } from 'react';
 import { useAppStore } from '../stores/useAppStore';
 import type { Recipe } from '../types';
 
 export default function Modal() {
   const modal = useAppStore(state => state.modal);
   const closeModal = useAppStore(state => state.closeModal);
+  const handleClickFavorite = useAppStore(state => state.handleClickFavorite)
+  const favoriteExist = useAppStore(state => state.favoriteExist)
   const selectedRecipe = useAppStore(state => state.selectedRecipe);
 
   const renderIngredients = () => {
@@ -37,7 +39,7 @@ export default function Modal() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-70" />
+            <div className="fixed inset-0 bg-black/70" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -68,6 +70,23 @@ export default function Modal() {
                     Instrucciones
                   </Dialog.Title>
                   <p className='text-lg'>{selectedRecipe.strInstructions}</p>
+
+                  <div className='mt-5 flex justify-between gap-4'>
+                    <button
+                    type='button'
+                    className='w-full rounded bg-gray-600 p-3 font-bold uppercase text-white shadow hover:bg-gray-500'
+                    onClick={closeModal}
+                    >
+                      Cerrar
+                    </button>
+                    <button
+                    type='button'
+                    className='w-full rounded bg-orange-600 p-3 font-bold uppercase text-white shadow hover:bg-gray-500'
+                    onClick={() => handleClickFavorite(selectedRecipe)}
+                    >
+                      {favoriteExist(selectedRecipe.idDrink) ? "Eliminar favorito" : "Agregar a favoritos"}
+                    </button>
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
