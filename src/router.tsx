@@ -10,6 +10,8 @@ import Layout from "./layouts/Layout";
 const FavoritesPages = lazy(() => import("./views/FavoritesPages"));
 // import IndexPage from "./views/IndexPage";
 const IndexPage = lazy(() => import("./views/IndexPage"));
+// import GenerateAI from "./views/GenerateAI";
+const GenerateAI = lazy(() => import("./views/GenerateAI"))
 //* Se hace un lazy import para mejorar el performance */
 
 export default function AppRouter() {
@@ -41,6 +43,16 @@ export default function AppRouter() {
                 fallback="Cargando..." // El fallback es interesante, se puede poner un spinner o algo en lo que se descarga el componente
               >
                 <FavoritesPages />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/generate"
+            element={
+              <Suspense
+                fallback="Cargando..." // El fallback es interesante, se puede poner un spinner o algo en lo que se descarga el componente
+              >
+                <GenerateAI />
               </Suspense>
             }
           />
