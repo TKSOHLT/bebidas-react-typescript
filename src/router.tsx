@@ -10,8 +10,8 @@ import Layout from "./layouts/Layout";
 const FavoritesPages = lazy(() => import("./views/FavoritesPages"));
 // import IndexPage from "./views/IndexPage";
 const IndexPage = lazy(() => import("./views/IndexPage"));
-// import GenerateAI from "./views/GenerateAI";
-const GenerateAI = lazy(() => import("./views/GenerateAI"))
+import GenerateAI from "./views/GenerateAI";
+// const GenerateAI = lazy(() => import("./views/GenerateAI"))
 //* Se hace un lazy import para mejorar el performance */
 
 export default function AppRouter() {
