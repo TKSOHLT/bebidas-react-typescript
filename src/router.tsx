@@ -49,11 +49,7 @@ export default function AppRouter() {
           <Route
             path="/generate"
             element={
-              <Suspense
-                fallback="Cargando..." // El fallback es interesante, se puede poner un spinner o algo en lo que se descarga el componente
-              >
-                <GenerateAI />
-              </Suspense>
+              <GenerateAI />
             }
           />
         </Route>
